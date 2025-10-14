@@ -1,31 +1,27 @@
 "use client"
 
 import * as React from "react"
-import { EditorContent, EditorContext, useEditor } from "@tiptap/react"
+import {EditorContent, EditorContext, useEditor} from "@tiptap/react"
 
 // --- Tiptap Core Extensions ---
-import { StarterKit } from "@tiptap/starter-kit"
-import { Image } from "@tiptap/extension-image"
-import { TaskItem, TaskList } from "@tiptap/extension-list"
-import { TextAlign } from "@tiptap/extension-text-align"
-import { Typography } from "@tiptap/extension-typography"
-import { Highlight } from "@tiptap/extension-highlight"
-import { Subscript } from "@tiptap/extension-subscript"
-import { Superscript } from "@tiptap/extension-superscript"
-import { Selection } from "@tiptap/extensions"
+import {StarterKit} from "@tiptap/starter-kit"
+import {Image} from "@tiptap/extension-image"
+import {TaskItem, TaskList} from "@tiptap/extension-list"
+import {TextAlign} from "@tiptap/extension-text-align"
+import {Typography} from "@tiptap/extension-typography"
+import {Highlight} from "@tiptap/extension-highlight"
+import {Subscript} from "@tiptap/extension-subscript"
+import {Superscript} from "@tiptap/extension-superscript"
+import {Selection} from "@tiptap/extensions"
 
 // --- UI Primitives ---
-import { Button } from "@/components/tiptap-ui-primitive/button"
-import { Spacer } from "@/components/tiptap-ui-primitive/spacer"
-import {
-  Toolbar,
-  ToolbarGroup,
-  ToolbarSeparator,
-} from "@/components/tiptap-ui-primitive/toolbar"
+import {Button} from "@/components/tiptap-ui-primitive/button"
+import {Spacer} from "@/components/tiptap-ui-primitive/spacer"
+import {Toolbar, ToolbarGroup, ToolbarSeparator,} from "@/components/tiptap-ui-primitive/toolbar"
 
 // --- Tiptap Node ---
-import { ImageUploadNode } from "@/components/tiptap-node/image-upload-node/image-upload-node-extension"
-import { HorizontalRule } from "@/components/tiptap-node/horizontal-rule-node/horizontal-rule-node-extension"
+import {ImageUploadNode} from "@/components/tiptap-node/image-upload-node/image-upload-node-extension"
+import {HorizontalRule} from "@/components/tiptap-node/horizontal-rule-node/horizontal-rule-node-extension"
 import "@/components/tiptap-node/blockquote-node/blockquote-node.scss"
 import "@/components/tiptap-node/code-block-node/code-block-node.scss"
 import "@/components/tiptap-node/horizontal-rule-node/horizontal-rule-node.scss"
@@ -35,247 +31,294 @@ import "@/components/tiptap-node/heading-node/heading-node.scss"
 import "@/components/tiptap-node/paragraph-node/paragraph-node.scss"
 
 // --- Tiptap UI ---
-import { HeadingDropdownMenu } from "@/components/tiptap-ui/heading-dropdown-menu"
-import { ImageUploadButton } from "@/components/tiptap-ui/image-upload-button"
-import { ListDropdownMenu } from "@/components/tiptap-ui/list-dropdown-menu"
-import { BlockquoteButton } from "@/components/tiptap-ui/blockquote-button"
-import { CodeBlockButton } from "@/components/tiptap-ui/code-block-button"
+import {HeadingDropdownMenu} from "@/components/tiptap-ui/heading-dropdown-menu"
+import {ImageUploadButton} from "@/components/tiptap-ui/image-upload-button"
+import {ListDropdownMenu} from "@/components/tiptap-ui/list-dropdown-menu"
+import {BlockquoteButton} from "@/components/tiptap-ui/blockquote-button"
+import {CodeBlockButton} from "@/components/tiptap-ui/code-block-button"
 import {
-  ColorHighlightPopover,
-  ColorHighlightPopoverContent,
-  ColorHighlightPopoverButton,
+    ColorHighlightPopover,
+    ColorHighlightPopoverButton,
+    ColorHighlightPopoverContent,
 } from "@/components/tiptap-ui/color-highlight-popover"
-import {
-  LinkPopover,
-  LinkContent,
-  LinkButton,
-} from "@/components/tiptap-ui/link-popover"
-import { MarkButton } from "@/components/tiptap-ui/mark-button"
-import { TextAlignButton } from "@/components/tiptap-ui/text-align-button"
-import { UndoRedoButton } from "@/components/tiptap-ui/undo-redo-button"
+import {LinkButton, LinkContent, LinkPopover,} from "@/components/tiptap-ui/link-popover"
+import {MarkButton} from "@/components/tiptap-ui/mark-button"
+import {TextAlignButton} from "@/components/tiptap-ui/text-align-button"
+import {UndoRedoButton} from "@/components/tiptap-ui/undo-redo-button"
 
 // --- Icons ---
-import { ArrowLeftIcon } from "@/components/tiptap-icons/arrow-left-icon"
-import { HighlighterIcon } from "@/components/tiptap-icons/highlighter-icon"
-import { LinkIcon } from "@/components/tiptap-icons/link-icon"
+import {ArrowLeftIcon} from "@/components/tiptap-icons/arrow-left-icon"
+import {HighlighterIcon} from "@/components/tiptap-icons/highlighter-icon"
+import {LinkIcon} from "@/components/tiptap-icons/link-icon"
 
 // --- Hooks ---
-import { useIsMobile } from "@/hooks/use-mobile"
-import { useWindowSize } from "@/hooks/use-window-size"
-import { useCursorVisibility } from "@/hooks/use-cursor-visibility"
+import {useIsMobile} from "@/hooks/use-mobile"
+import {useWindowSize} from "@/hooks/use-window-size"
+import {useCursorVisibility} from "@/hooks/use-cursor-visibility"
 
 // --- Components ---
-import { ThemeToggle } from "@/components/tiptap-templates/simple/theme-toggle"
+import {ThemeToggle} from "@/components/tiptap-templates/simple/theme-toggle"
 
 // --- Lib ---
-import { handleImageUpload, MAX_FILE_SIZE } from "@/lib/tiptap-utils"
+import {handleImageUpload, MAX_FILE_SIZE} from "@/lib/tiptap-utils"
 
 // --- Styles ---
 import "@/components/tiptap-templates/simple/simple-editor.scss"
 
 import content from "@/components/tiptap-templates/simple/data/content.json"
+import {useState} from "react";
 
 const MainToolbarContent = ({
-  onHighlighterClick,
-  onLinkClick,
-  isMobile,
-}: {
-  onHighlighterClick: () => void
-  onLinkClick: () => void
-  isMobile: boolean
+                                onHighlighterClick,
+                                onLinkClick,
+                                isMobile,
+                            }: {
+    onHighlighterClick: () => void
+    onLinkClick: () => void
+    isMobile: boolean
 }) => {
-  return (
-    <>
-      <Spacer />
+    return (
+        <>
+            <Spacer/>
 
-      <ToolbarGroup>
-        <UndoRedoButton action="undo" />
-        <UndoRedoButton action="redo" />
-      </ToolbarGroup>
+            <ToolbarGroup>
+                <UndoRedoButton action="undo"/>
+                <UndoRedoButton action="redo"/>
+            </ToolbarGroup>
 
-      <ToolbarSeparator />
+            <ToolbarSeparator/>
 
-      <ToolbarGroup>
-        <HeadingDropdownMenu levels={[1, 2, 3, 4]} portal={isMobile} />
-        <ListDropdownMenu
-          types={["bulletList", "orderedList", "taskList"]}
-          portal={isMobile}
-        />
-        <BlockquoteButton />
-        <CodeBlockButton />
-      </ToolbarGroup>
+            <ToolbarGroup>
+                <HeadingDropdownMenu levels={[1, 2, 3, 4]} portal={isMobile}/>
+                <ListDropdownMenu
+                    types={["bulletList", "orderedList", "taskList"]}
+                    portal={isMobile}
+                />
+                <BlockquoteButton/>
+                <CodeBlockButton/>
+            </ToolbarGroup>
 
-      <ToolbarSeparator />
+            <ToolbarSeparator/>
 
-      <ToolbarGroup>
-        <MarkButton type="bold" />
-        <MarkButton type="italic" />
-        <MarkButton type="strike" />
-        <MarkButton type="code" />
-        <MarkButton type="underline" />
-        {!isMobile ? (
-          <ColorHighlightPopover />
-        ) : (
-          <ColorHighlightPopoverButton onClick={onHighlighterClick} />
-        )}
-        {!isMobile ? <LinkPopover /> : <LinkButton onClick={onLinkClick} />}
-      </ToolbarGroup>
+            <ToolbarGroup>
+                <MarkButton type="bold"/>
+                <MarkButton type="italic"/>
+                <MarkButton type="strike"/>
+                <MarkButton type="code"/>
+                <MarkButton type="underline"/>
+                {!isMobile ? (
+                    <ColorHighlightPopover/>
+                ) : (
+                    <ColorHighlightPopoverButton onClick={onHighlighterClick}/>
+                )}
+                {!isMobile ? <LinkPopover/> : <LinkButton onClick={onLinkClick}/>}
+            </ToolbarGroup>
 
-      <ToolbarSeparator />
+            <ToolbarSeparator/>
 
-      <ToolbarGroup>
-        <MarkButton type="superscript" />
-        <MarkButton type="subscript" />
-      </ToolbarGroup>
+            <ToolbarGroup>
+                <MarkButton type="superscript"/>
+                <MarkButton type="subscript"/>
+            </ToolbarGroup>
 
-      <ToolbarSeparator />
+            <ToolbarSeparator/>
 
-      <ToolbarGroup>
-        <TextAlignButton align="left" />
-        <TextAlignButton align="center" />
-        <TextAlignButton align="right" />
-        <TextAlignButton align="justify" />
-      </ToolbarGroup>
+            <ToolbarGroup>
+                <TextAlignButton align="left"/>
+                <TextAlignButton align="center"/>
+                <TextAlignButton align="right"/>
+                <TextAlignButton align="justify"/>
+            </ToolbarGroup>
 
-      <ToolbarSeparator />
+            <ToolbarSeparator/>
 
-      <ToolbarGroup>
-        <ImageUploadButton text="Add" />
-      </ToolbarGroup>
+            <ToolbarGroup>
+                <ImageUploadButton text="Add"/>
+            </ToolbarGroup>
 
-      <Spacer />
+            <Spacer/>
 
-      {isMobile && <ToolbarSeparator />}
+            {isMobile && <ToolbarSeparator/>}
 
-      <ToolbarGroup>
-        <ThemeToggle />
-      </ToolbarGroup>
-    </>
-  )
+            <ToolbarGroup>
+                <ThemeToggle/>
+            </ToolbarGroup>
+        </>
+    )
 }
 
 const MobileToolbarContent = ({
-  type,
-  onBack,
-}: {
-  type: "highlighter" | "link"
-  onBack: () => void
+                                  type,
+                                  onBack,
+                              }: {
+    type: "highlighter" | "link"
+    onBack: () => void
 }) => (
-  <>
-    <ToolbarGroup>
-      <Button data-style="ghost" onClick={onBack}>
-        <ArrowLeftIcon className="tiptap-button-icon" />
+    <>
+        <ToolbarGroup>
+            <Button data-style="ghost" onClick={onBack}>
+                <ArrowLeftIcon className="tiptap-button-icon"/>
+                {type === "highlighter" ? (
+                    <HighlighterIcon className="tiptap-button-icon"/>
+                ) : (
+                    <LinkIcon className="tiptap-button-icon"/>
+                )}
+            </Button>
+        </ToolbarGroup>
+
+        <ToolbarSeparator/>
+
         {type === "highlighter" ? (
-          <HighlighterIcon className="tiptap-button-icon" />
+            <ColorHighlightPopoverContent/>
         ) : (
-          <LinkIcon className="tiptap-button-icon" />
+            <LinkContent/>
         )}
-      </Button>
-    </ToolbarGroup>
-
-    <ToolbarSeparator />
-
-    {type === "highlighter" ? (
-      <ColorHighlightPopoverContent />
-    ) : (
-      <LinkContent />
-    )}
-  </>
+    </>
 )
 
 export function SimpleEditor() {
-  const isMobile = useIsMobile()
-  const { height } = useWindowSize()
-  const [mobileView, setMobileView] = React.useState<
-    "main" | "highlighter" | "link"
-  >("main")
-  const toolbarRef = React.useRef<HTMLDivElement>(null)
+    const isMobile = useIsMobile()
+    const {height} = useWindowSize()
+    const [title, setTitle] = useState<string>("")
+    const [mobileView, setMobileView] = useState<
+        "main" | "highlighter" | "link"
+    >("main")
+    const toolbarRef = React.useRef<HTMLDivElement>(null)
 
-  const editor = useEditor({
-    immediatelyRender: false,
-    shouldRerenderOnTransaction: false,
-    editorProps: {
-      attributes: {
-        autocomplete: "off",
-        autocorrect: "off",
-        autocapitalize: "off",
-        "aria-label": "Main content area, start typing to enter text.",
-        class: "simple-editor",
-      },
-    },
-    extensions: [
-      StarterKit.configure({
-        horizontalRule: false,
-        link: {
-          openOnClick: false,
-          enableClickSelection: true,
+    const editor = useEditor({
+        immediatelyRender: false,
+        shouldRerenderOnTransaction: false,
+        editorProps: {
+            attributes: {
+                autocomplete: "off",
+                autocorrect: "off",
+                autocapitalize: "off",
+                "aria-label": "Main content area, start typing to enter text.",
+                class: "simple-editor",
+            },
         },
-      }),
-      HorizontalRule,
-      TextAlign.configure({ types: ["heading", "paragraph"] }),
-      TaskList,
-      TaskItem.configure({ nested: true }),
-      Highlight.configure({ multicolor: true }),
-      Image,
-      Typography,
-      Superscript,
-      Subscript,
-      Selection,
-      ImageUploadNode.configure({
-        accept: "image/*",
-        maxSize: MAX_FILE_SIZE,
-        limit: 3,
-        upload: handleImageUpload,
-        onError: (error) => console.error("Upload failed:", error),
-      }),
-    ],
-    content,
-  })
+        extensions: [
+            StarterKit.configure({
+                horizontalRule: false,
+                link: {
+                    openOnClick: false,
+                    enableClickSelection: true,
+                },
+            }),
+            HorizontalRule,
+            TextAlign.configure({types: ["heading", "paragraph"]}),
+            TaskList,
+            TaskItem.configure({nested: true}),
+            Highlight.configure({multicolor: true}),
+            Image,
+            Typography,
+            Superscript,
+            Subscript,
+            Selection,
+            ImageUploadNode.configure({
+                accept: "image/*",
+                maxSize: MAX_FILE_SIZE,
+                limit: 3,
+                upload: handleImageUpload,
+                onError: (error) => console.error("Upload failed:", error),
+            }),
+        ],
+        content,
+    })
 
-  const rect = useCursorVisibility({
-    editor,
-    overlayHeight: toolbarRef.current?.getBoundingClientRect().height ?? 0,
-  })
+    const rect = useCursorVisibility({
+        editor,
+        overlayHeight: toolbarRef.current?.getBoundingClientRect().height ?? 0,
+    })
 
-  React.useEffect(() => {
-    if (!isMobile && mobileView !== "main") {
-      setMobileView("main")
+    const handleSubmit = async () => {
+        if (!editor) return
+
+        try {
+            const postTitle = title || "Untitled"
+            const content = editor.getHTML()
+
+            const post = {
+                title: postTitle,
+                content: content,
+            }
+
+            const response = await fetch("https://api.star.vividcats.org/api/posts", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(post),
+            })
+
+            if (!response.ok) {
+                throw new Error(`Failed to submit post: ${response.statusText}`)
+            }
+
+            const result = await response.json()
+            console.log("Post submitted successfully:", result)
+
+            // Optional: Clear the editor and title after successful submission
+            // editor.commands.clearContent()
+            // setTitle("")
+
+            // Optional: Show success message to user
+            alert("Post submitted successfully!")
+        } catch (error) {
+            console.error("Error submitting post:", error)
+            alert("Failed to submit post. Please try again.")
+        }
     }
-  }, [isMobile, mobileView])
+    React.useEffect(() => {
+        if (!isMobile && mobileView !== "main") {
+            setMobileView("main")
+        }
+    }, [isMobile, mobileView])
 
-  return (
-    <div className="simple-editor-wrapper">
-      <EditorContext.Provider value={{ editor }}>
-        <Toolbar
-          ref={toolbarRef}
-          style={{
-            ...(isMobile
-              ? {
-                  bottom: `calc(100% - ${height - rect.y}px)`,
-                }
-              : {}),
-          }}
-        >
-          {mobileView === "main" ? (
-            <MainToolbarContent
-              onHighlighterClick={() => setMobileView("highlighter")}
-              onLinkClick={() => setMobileView("link")}
-              isMobile={isMobile}
-            />
-          ) : (
-            <MobileToolbarContent
-              type={mobileView === "highlighter" ? "highlighter" : "link"}
-              onBack={() => setMobileView("main")}
-            />
-          )}
-        </Toolbar>
+    React.useEffect(() => {
 
-        <EditorContent
-          editor={editor}
-          role="presentation"
-          className="simple-editor-content"
-        />
-      </EditorContext.Provider>
-    </div>
-  )
+        if (!editor) return;
+        editor.on('update', ({editor}) => {
+            // The content has changed.
+
+        })
+    }, [editor])
+
+    return (
+        <div className="simple-editor-wrapper">
+            <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
+            <EditorContext.Provider value={{editor}}>
+                <Toolbar
+                    ref={toolbarRef}
+                    style={{
+                        ...(isMobile
+                            ? {
+                                bottom: `calc(100% - ${height - rect.y}px)`,
+                            }
+                            : {}),
+                    }}
+                >
+                    {mobileView === "main" ? (
+                        <MainToolbarContent
+                            onHighlighterClick={() => setMobileView("highlighter")}
+                            onLinkClick={() => setMobileView("link")}
+                            isMobile={isMobile}
+                        />
+                    ) : (
+                        <MobileToolbarContent
+                            type={mobileView === "highlighter" ? "highlighter" : "link"}
+                            onBack={() => setMobileView("main")}
+                        />
+                    )}
+                </Toolbar>
+
+                <EditorContent
+                    editor={editor}
+                    role="presentation"
+                    className="simple-editor-content"
+                />
+                <button onClick={handleSubmit} className="p-4 bg-indigo-500 text-amber-50">Submit</button>
+            </EditorContext.Provider>
+        </div>
+    )
 }
