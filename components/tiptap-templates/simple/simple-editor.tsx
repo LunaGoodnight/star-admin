@@ -247,6 +247,7 @@ export function SimpleEditor() {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
+                    "X-API-Key": process.env.API_KEY,
                 },
                 body: JSON.stringify(post),
             })
