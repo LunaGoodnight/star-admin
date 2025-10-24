@@ -3,5 +3,5 @@ services:
   meme:
     build: .
     ports:
-      - "120.0.0.1:1025:3000"
+      - "127.0.0.1:1025:3000"
     restart: always
