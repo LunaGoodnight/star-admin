@@ -243,7 +243,7 @@ export function SimpleEditor() {
                 content: content,
             }
 
-            const response = await fetch("/api/posts", {
+            const response = await fetch(`${process.env.API_DOMAIN}/api/posts`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
