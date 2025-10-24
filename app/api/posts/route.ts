@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server'
 export async function POST(request: NextRequest) {
     try {
         const body = await request.json()
-        const { title, content } = body
+        const { title, content, isDraft = false } = body
 
         if (!title || !content) {
             return NextResponse.json(
@@ -12,8 +12,9 @@ export async function POST(request: NextRequest) {
             )
         }
 
-        // Get API key from environment variable (server-side only)
+        // Get API key and domain from environment variables (server-side only)
         const apiKey = process.env.API_KEY
+        const apiDomain = process.env.API_DOMAIN || 'https://api.star.vividcats.org'
 
         if (!apiKey) {
             console.error('API_KEY is not configured')
@@ -24,13 +25,13 @@ export async function POST(request: NextRequest) {
         }
 
         // Make the request to your external API
-        const response = await fetch('https://api.star.vividcats.org/api/posts', {
+        const response = await fetch(`${apiDomain}/api/posts`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'X-API-Key': apiKey,
             },
-            body: JSON.stringify({ title, content }),
+            body: JSON.stringify({ title, content, isDraft }),
         })
 
         if (!response.ok) {

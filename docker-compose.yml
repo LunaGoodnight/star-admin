@@ -4,4 +4,6 @@ services:
     build: .
     ports:
       - "127.0.0.1:1025:3000"
+    env_file:
+      - .env
     restart: always

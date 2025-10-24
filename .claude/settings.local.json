@@ -4,7 +4,8 @@
       "Bash(npm install:*)",
       "Bash(tree:*)",
       "Read(//d/side-project/**)",
-      "Bash(npm run build:*)"
+      "Bash(npm run build:*)",
+      "Bash(docker-compose up:*)"
     ],
     "deny": [],
     "ask": []

@@ -243,7 +243,7 @@ export function SimpleEditor() {
                 content: content,
             }
 
-            const response = await fetch(`https://api.star.vividcats.org/api/posts`, {
+            const response = await fetch(`/api/posts`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
