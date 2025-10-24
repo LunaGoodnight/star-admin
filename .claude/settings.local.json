@@ -3,7 +3,8 @@
     "allow": [
       "Bash(npm install:*)",
       "Bash(tree:*)",
-      "Read(//d/side-project/**)"
+      "Read(//d/side-project/**)",
+      "Bash(npm run build:*)"
     ],
     "deny": [],
     "ask": []
