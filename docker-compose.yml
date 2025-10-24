@@ -1,6 +1,6 @@
-version: '3'
 services:
-  meme:
+  star-admin:
+    container_name: star-admin
     build: .
     ports:
       - "127.0.0.1:1025:3000"
