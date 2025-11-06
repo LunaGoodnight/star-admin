@@ -5,9 +5,21 @@
       "Bash(tree:*)",
       "Read(//d/side-project/**)",
       "Bash(npm run build:*)",
-      "Bash(docker-compose up:*)"
+      "Bash(docker-compose up:*)",
+      "Bash(node --version:*)",
+      "Bash(npx @next/codemod@canary upgrade:*)",
+      "Bash(cat:*)",
+      "Bash(npm uninstall:*)",
+      "WebFetch(domain:context7.com)",
+      "WebFetch(domain:github.com)",
+      "Bash(claude mcp add:*)",
+      "Read(//c/Users/user/.claude/**)"
     ],
     "deny": [],
     "ask": []
-  }
+  },
+  "enabledMcpjsonServers": [
+    "context7"
+  ],
+  "enableAllProjectMcpServers": true
 }
