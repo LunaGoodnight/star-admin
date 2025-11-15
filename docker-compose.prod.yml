@@ -1,0 +1,9 @@
+services:
+  star-admin:
+    container_name: star-admin
+    image: catsheue/star-admin:latest
+    ports:
+      - "127.0.0.1:1025:3000"
+    env_file:
+      - .env
+    restart: always

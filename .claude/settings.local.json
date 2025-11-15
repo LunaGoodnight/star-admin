@@ -13,13 +13,16 @@
       "WebFetch(domain:context7.com)",
       "WebFetch(domain:github.com)",
       "Bash(claude mcp add:*)",
-      "Read(//c/Users/user/.claude/**)"
+      "Read(//c/Users/user/.claude/**)",
+      "Bash(docker build:*)",
+      "Bash(docker:*)",
+      "WebFetch(domain:hub.docker.com)"
     ],
     "deny": [],
     "ask": []
   },
+  "enableAllProjectMcpServers": true,
   "enabledMcpjsonServers": [
     "context7"
-  ],
-  "enableAllProjectMcpServers": true
+  ]
 }
