@@ -30,7 +30,7 @@ export const uploadImageToBackend = async (
 
   try {
     // Get API URL and token from environment/localStorage
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5002"
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://api.star.vividcats.org"
     const token = typeof window !== "undefined" ? localStorage.getItem("token") : null
 
     if (!token) {
