@@ -18,6 +18,10 @@ RUN npm install
 # Copy the rest of your application code
 COPY . .
 
+# Set production environment variables for build
+ARG NEXT_PUBLIC_API_URL=https://api.star.vividcats.org
+ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
+
 # Build the Next.js application
 RUN npm run build
 

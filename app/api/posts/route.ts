@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
 
         // Get API key and domain from environment variables (server-side only)
         const apiKey = process.env.API_KEY
-        const apiDomain = process.env.API_DOMAIN || 'https://api.star.vividcats.org'
+        const apiDomain = process.env.NEXT_PUBLIC_API_URL || 'https://api.star.vividcats.org'
 
         if (!apiKey) {
             console.error('API_KEY is not configured')
